@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
 
-class TodoListPage extends StatelessWidget {
-  const TodoListPage({super.key});
+class TodoListPage extends StatefulWidget {
+  TodoListPage({super.key});
+
+  @override
+  State<TodoListPage> createState() => _TodoListPageState();
+}
+
+class _TodoListPageState extends State<TodoListPage> {
+  final TextEditingController todoController = TextEditingController();
+
+  List<String> todos = [];
 
   @override
   Widget build(BuildContext context) {
@@ -16,45 +25,71 @@ class TodoListPage extends StatelessWidget {
                 children: [
                   Expanded(
                     child: TextField(
-                      decoration: InputDecoration(
+                      controller: todoController,
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Add new task',
                         hintText: 'Ex: study Flutter.',
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 8,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      String text = todoController.text;
+                      setState(() {
+                        todos.add(text);
+                      });
+                      todoController.clear();
+                    },
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xff00d7f3),
-                        padding: EdgeInsets.all(19)),
-                    child: Icon(
+                        backgroundColor: const Color(0xff00d7f3),
+                        padding: const EdgeInsets.all(19)),
+                    child: const Icon(
                       Icons.add,
                       size: 30,
                     ),
                   )
                 ],
               ),
-              SizedBox(
+              const SizedBox(
+                height: 16,
+              ),
+              Flexible(
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    for (String todo in todos)
+                      ListTile(
+                        title: Text(todo),
+                        subtitle: const Text('20/10/2020'),
+                        leading: const Icon(Icons.save, size: 30),
+                        onTap: () {
+                          print('tarefa: $todo');
+                        },
+                      ),
+                  ],
+                ),
+              ),
+              const SizedBox(
                 height: 16,
               ),
               Row(
                 children: [
-                  Expanded(
+                  const Expanded(
                     child: Text(
                       'You have 0 tasks pendents',
                     ),
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xff00d7f3),
-                        padding: EdgeInsets.all(19)),
-                    child: Text('Clear all'),
+                        backgroundColor: const Color(0xff00d7f3),
+                        padding: const EdgeInsets.all(19)),
+                    child: const Text('Clear all'),
                   )
                 ],
               )
